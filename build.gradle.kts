@@ -6,24 +6,20 @@ plugins {
     kotlin("kapt") version "1.9.10"
 }
 
-val test by tasks.getting(Test::class) {
-    useJUnitPlatform { }
-}
-
 val arrowVersion = "0.11.0"
 dependencies {
-    compileOnly(kotlin("stdlib"))
-    compileOnly("io.arrow-kt:arrow-core-data:$arrowVersion")
-    compileOnly("io.arrow-kt:arrow-fx:$arrowVersion")
-    compileOnly("io.arrow-kt:arrow-mtl:$arrowVersion")
-    compileOnly("io.arrow-kt:arrow-syntax:$arrowVersion")
-    compileOnly("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
-    compileOnly("io.github.microutils:kotlin-logging:3.0.5")
-    compileOnly("org.awaitility:awaitility:4.2.0")
-    runtimeOnly("org.slf4j:slf4j-simple:2.0.9")
+    implementation(kotlin("stdlib"))
+    implementation("io.arrow-kt:arrow-core-data:$arrowVersion")
+    implementation("io.arrow-kt:arrow-fx:$arrowVersion")
+    implementation("io.arrow-kt:arrow-mtl:$arrowVersion")
+    implementation("io.arrow-kt:arrow-syntax:$arrowVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
+    implementation("io.github.microutils:kotlin-logging:3.0.5")
+    implementation("org.awaitility:awaitility:4.2.0")
+    implementation("org.slf4j:slf4j-simple:2.0.9")
 
     // need this at compile level for chapter 8
-    compileOnly("io.kotlintest:kotlintest-runner-junit5:3.4.2")
+    testImplementation("io.kotest:kotest-runner-junit5:5.7.2")
     kapt("io.arrow-kt:arrow-meta:$arrowVersion")
 }
 
@@ -33,6 +29,10 @@ repositories {
 
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.suppressWarnings = true
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }
 
 ktlint {
