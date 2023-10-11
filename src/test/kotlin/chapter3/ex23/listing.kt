@@ -1,0 +1,60 @@
+package chapter3.ex23
+
+import chapter3.Cons
+import chapter3.List
+import chapter3.Nil
+import io.kotest.core.spec.style.WordSpec
+import io.kotest.matchers.shouldBe
+
+// tag::startsWith[]
+tailrec fun <A> startsWith(target: List<A>, sub: List<A>): Boolean =
+    when (target) {
+        is Nil -> sub == Nil
+        is Cons -> when (sub) {
+            is Nil -> true
+            is Cons ->
+                if (target.head == sub.head) startsWith(target.tail, sub.tail)
+                else false
+        }
+    }
+// end::startsWith[]
+
+// tag::init[]
+tailrec fun <A> hasSubsequence(xs: List<A>, sub: List<A>): Boolean =
+    when (xs) {
+        is Nil -> false
+        is Cons -> {
+            if (startsWith(xs, sub)) true
+            else hasSubsequence(xs.tail, sub)
+        }
+    }
+// end::init[]
+
+//TODO: Enable tests by removing `!` prefix
+class Exercise23 : WordSpec({
+    "list subsequence" should {
+        "!determine if a list starts with" {
+            val xs = List.of(1, 2, 3)
+            startsWith(xs, List.of(1)) shouldBe true
+            startsWith(xs, List.of(1, 2)) shouldBe true
+            startsWith(xs, xs) shouldBe true
+            startsWith(xs, List.of(2, 3)) shouldBe false
+            startsWith(xs, List.of(3)) shouldBe false
+            startsWith(xs, List.of(6)) shouldBe false
+        }
+
+        "!identify subsequences of a list" {
+            val xs = List.of(1, 2, 3, 4, 5)
+            hasSubsequence(xs, List.of(1)) shouldBe true
+            hasSubsequence(xs, List.of(1, 2)) shouldBe true
+            hasSubsequence(xs, List.of(2, 3)) shouldBe true
+            hasSubsequence(xs, List.of(3, 4)) shouldBe true
+            hasSubsequence(xs, List.of(3, 4, 5)) shouldBe true
+            hasSubsequence(xs, List.of(4)) shouldBe true
+
+            hasSubsequence(xs, List.of(1, 4)) shouldBe false
+            hasSubsequence(xs, List.of(1, 3)) shouldBe false
+            hasSubsequence(xs, List.of(2, 4)) shouldBe false
+        }
+    }
+})
