@@ -9,6 +9,7 @@ plugins {
 val arrowVersion = "0.11.0"
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation(kotlin("reflect"))
     implementation("io.arrow-kt:arrow-core-data:$arrowVersion")
     implementation("io.arrow-kt:arrow-fx:$arrowVersion")
     implementation("io.arrow-kt:arrow-mtl:$arrowVersion")
